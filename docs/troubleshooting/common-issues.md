@@ -186,7 +186,76 @@ debug_env = DebuggingStockTradingEnv(df=processed_df, **env_kwargs)
 
 ## Training Issues
 
-### 5. Model Not Learning / Converging
+### 5. Rollout Buffer Errors with SAC/DDPG/TD3
+
+#### Issue: Repeated "Logging Error: 'rollout_buffer'" messages
+
+**Example Error:**
+```
+Logging Error: 'rollout_buffer'
+Logging Error: 'rollout_buffer'
+...
+```
+
+**Cause:** FinRL's default `TensorboardCallback` tries to access `rollout_buffer` which only exists in on-policy algorithms (PPO, A2C), not off-policy algorithms (SAC, DDPG, TD3).
+
+**Solution:** These errors are harmless and don't affect training. The model will train normally.
+
+**Options to handle:**
+
+**A. Ignore the errors** (recommended)
+```python
+# These errors don't impact training performance
+trained_sac_model = DRLAgent.train_model(
+    model=sac_model,
+    tb_log_name="sac_crypto_trading",
+    total_timesteps=50000,
+    callbacks=[checkpoint_callback, eval_callback]
+)
+# Training continues normally despite the error messages
+```
+
+**B. Create custom callback for off-policy algorithms**
+```python
+from stable_baselines3.common.callbacks import BaseCallback
+
+class OffPolicyTensorboardCallback(BaseCallback):
+    """Custom callback for off-policy algorithms without rollout_buffer access"""
+    
+    def __init__(self, verbose=0):
+        super().__init__(verbose)
+
+    def _on_step(self) -> bool:
+        # Log basic metrics available for off-policy algorithms
+        try:
+            if hasattr(self.locals, 'infos') and self.locals['infos']:
+                for info in self.locals['infos']:
+                    if 'reward' in info:
+                        self.logger.record('train/episode_reward', info['reward'])
+        except Exception as e:
+            pass  # Fail silently
+        return True
+
+# Use with off-policy algorithms
+trained_model = DRLAgent.train_model(
+    model=sac_model,
+    tb_log_name="sac_training_clean",
+    total_timesteps=50000,
+    callbacks=[OffPolicyTensorboardCallback(), eval_callback]
+)
+```
+
+**C. Disable TensorBoard logging entirely**
+```python
+# Train without custom callbacks to avoid rollout_buffer errors
+trained_model = sac_model.learn(
+    total_timesteps=50000,
+    tb_log_name="sac_training",
+    callback=eval_callback  # Only use essential callbacks
+)
+```
+
+### 6. Model Not Learning / Converging
 
 #### Issue: Flat reward curves, no improvement
 

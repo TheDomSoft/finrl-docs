@@ -103,6 +103,19 @@ trained_model = DRLAgent.train_model(
 )
 ```
 
+**Note for Off-Policy Algorithms (SAC, DDPG, TD3):**
+```python
+# For SAC, DDPG, TD3 - you might see rollout_buffer errors in logs
+# These are harmless and don't affect training
+trained_sac_model = DRLAgent.train_model(
+    model=sac_model,
+    tb_log_name="sac_crypto_trading",
+    total_timesteps=50000,
+    callbacks=[checkpoint_callback, eval_callback]
+)
+# Errors like "Logging Error: 'rollout_buffer'" are expected and can be ignored
+```
+
 #### DRL_prediction()
 
 Makes predictions using a trained model.
@@ -208,6 +221,9 @@ sac_model = agent.get_model(
     }
 )
 ```
+
+!!! warning "SAC and TensorBoard Logging"
+    SAC is an off-policy algorithm and doesn't have a `rollout_buffer` like on-policy algorithms (PPO, A2C). If you see `rollout_buffer` errors, they come from FinRL's default `TensorboardCallback`. The errors are harmless but indicate the callback can't access certain metrics for off-policy algorithms.
 
 ### DDPG (Deep Deterministic Policy Gradient)
 

@@ -65,6 +65,11 @@ nav:
     - Agent Classes: api/agents.md
   - Data & Features:
     - Data Format: data/format-requirements.md
+  - Training:
+    - Algorithm Selection: training/algorithm-selection.md
+    - Training Configuration: training/training-configuration.md
+    - Training Process: training/training-process.md
+    - Hyperparameter Tuning: training/hyperparameter-tuning.md
   - Advanced Features:
     - Ensemble Methods: advanced/ensemble-methods.md
   - Examples & Tutorials:

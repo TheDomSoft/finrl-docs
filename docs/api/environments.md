@@ -28,7 +28,13 @@ class StockTradingEnv(gym.Env):
         turbulence_threshold=None,
         risk_indicator_col="turbulence",
         make_plots: bool = False,
-        print_verbosity=10
+        print_verbosity=10,
+        day=0,
+        initial=True,
+        previous_state=[],
+        model_name="",
+        mode="",
+        iteration=""
     )
 ```
 
@@ -47,10 +53,16 @@ class StockTradingEnv(gym.Env):
 | `state_space` | `int` | State vector dimensions |
 | `action_space` | `int` | Action vector dimensions |
 | `tech_indicator_list` | `list[str]` | Technical indicators to include |
-| `turbulence_threshold` | `float` | Risk management threshold |
-| `risk_indicator_col` | `str` | Column name for risk metric |
-| `make_plots` | `bool` | Enable automatic plotting |
-| `print_verbosity` | `int` | Logging frequency |
+| `turbulence_threshold` | `float` | Risk management threshold (optional) |
+| `risk_indicator_col` | `str` | Column name for risk metric (default: "turbulence") |
+| `make_plots` | `bool` | Enable automatic plotting (default: False) |
+| `print_verbosity` | `int` | Logging frequency (default: 10) |
+| `day` | `int` | Starting day index (default: 0) |
+| `initial` | `bool` | Initial state flag (default: True) |
+| `previous_state` | `list` | Previous state for continuity (default: []) |
+| `model_name` | `str` | Model identifier (default: "") |
+| `mode` | `str` | Operating mode (default: "") |
+| `iteration` | `str` | Iteration identifier (default: "") |
 
 ### State Space
 
@@ -131,28 +143,25 @@ env = StockTradingEnv(
 from finrl.meta.env_stock_trading.env_stocktrading import StockTradingEnv
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-# Environment configuration
-env_kwargs = {
-    "hmax": 100,
-    "initial_amount": 1000000,
-    "buy_cost_pct": 0.001,
-    "sell_cost_pct": 0.001,
-    "reward_scaling": 1e-4,
-    "turbulence_threshold": 140
-}
+# Required parameters (no optional kwargs with invalid parameters)
+def create_env(data):
+    return StockTradingEnv(
+        df=data,
+        stock_dim=len(tickers),
+        hmax=100,
+        initial_amount=1000000,
+        num_stock_shares=[0] * len(tickers),  # Start with no holdings
+        buy_cost_pct=[0.001] * len(tickers),
+        sell_cost_pct=[0.001] * len(tickers),
+        reward_scaling=1e-4,
+        state_space=state_dimensions,
+        action_space=len(tickers),
+        tech_indicator_list=indicators,
+        turbulence_threshold=140
+    )
 
-# Create environment
-env = StockTradingEnv(
-    df=processed_data,
-    stock_dim=len(tickers),
-    state_space=state_dimensions,
-    action_space=len(tickers),
-    tech_indicator_list=indicators,
-    **env_kwargs
-)
-
-# Wrap for Stable Baselines3
-vec_env = DummyVecEnv([lambda: env])
+# Create and wrap environment
+vec_env = DummyVecEnv([lambda: create_env(processed_data)])
 ```
 
 ## CryptoEnv
@@ -239,6 +248,11 @@ Optimizes portfolio weights rather than individual trades.
 
 !!! warning "Transaction Costs"
     Set realistic transaction costs: 0.1% (0.001) for stocks, 0.25% (0.0025) for crypto
+
+!!! danger "Common Parameter Errors"
+    - **TypeError with unexpected keyword arguments**: Ensure you're not passing invalid parameters like `day_trading`, `lookback_window`, etc.
+    - **All required parameters must be provided**: `df`, `stock_dim`, `hmax`, `initial_amount`, `num_stock_shares`, `buy_cost_pct`, `sell_cost_pct`, `reward_scaling`, `state_space`, `action_space`, `tech_indicator_list`
+    - **List parameters must match stock_dim**: `num_stock_shares`, `buy_cost_pct`, `sell_cost_pct` should have length equal to `stock_dim`
 
 !!! info "State Space Calculation"
     Always verify state space dimensions match your data:
