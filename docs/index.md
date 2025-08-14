@@ -56,32 +56,21 @@ trained_model = agent.train_model(model, total_timesteps=50000)
 
 ## 📚 Documentation Sections
 
-### Getting Started
-- [Overview](getting-started/overview.md) - Library overview and concepts
-- [Installation](getting-started/installation.md) - Installation guide
-- [Quick Start](getting-started/quickstart.md) - Your first trading agent
-
-### Architecture
-- [Core Components](architecture/core-components.md) - Main library components
-- [Environment Layer](architecture/environment-layer.md) - Trading environments
-- [Agent Layer](architecture/agent-layer.md) - RL algorithms
-- [Data Layer](architecture/data-layer.md) - Data processing pipeline
-
 ### API Reference
 - [Environment Classes](api/environments.md) - Trading environment APIs
 - [Agent Classes](api/agents.md) - RL agent implementations
-- [Data Processing](api/data-processing.md) - Data preprocessing tools
-- [Utilities](api/utilities.md) - Helper functions and tools
 
-### Training & Evaluation
-- [Algorithm Configuration](training/algorithm-config.md) - RL algorithm parameters
-- [Performance Metrics](evaluation/performance-metrics.md) - Backtesting and evaluation
-- [Visualization](evaluation/visualization.md) - Plotting and analysis tools
+### Data & Features
+- [Data Format](data/format-requirements.md) - Data requirements and format specifications
 
 ### Advanced Features
-- [Custom Environments](advanced/custom-environments.md) - Build custom trading environments
 - [Ensemble Methods](advanced/ensemble-methods.md) - Multi-model strategies
-- [Paper Trading](advanced/paper-trading.md) - Live trading integration
+
+### Examples & Tutorials
+- [Cryptocurrency Trading](examples/crypto-trading.md) - Crypto trading strategies and examples
+
+### Troubleshooting
+- [Common Issues](troubleshooting/common-issues.md) - Solutions to frequent problems
 
 ## 🎯 Key Features
 
@@ -99,7 +88,7 @@ trained_model = agent.train_model(model, total_timesteps=50000)
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Development Setup](contributing/development.md) guide to get started.
+We welcome contributions! Please check our GitHub repository for contribution guidelines.
 
 ## 📄 License
 
