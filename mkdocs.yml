@@ -1,0 +1,107 @@
+site_name: FinRL Documentation
+site_description: Comprehensive documentation for FinRL - A Deep Reinforcement Learning Library for Financial Markets
+site_author: FinRL Team
+site_url: https://github.com/AI4Finance-Foundation/FinRL
+
+repo_name: AI4Finance-Foundation/FinRL
+repo_url: https://github.com/AI4Finance-Foundation/FinRL
+edit_uri: edit/master/docs/
+
+copyright: Copyright &copy; 2024 FinRL Team
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.instant
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.annotate
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/overview.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+  - Architecture:
+    - Core Components: architecture/core-components.md
+    - Environment Layer: architecture/environment-layer.md
+    - Agent Layer: architecture/agent-layer.md
+    - Data Layer: architecture/data-layer.md
+  - API Reference:
+    - Environment Classes: api/environments.md
+    - Agent Classes: api/agents.md
+    - Data Processing: api/data-processing.md
+    - Utilities: api/utilities.md
+  - Data & Features:
+    - Data Format: data/format-requirements.md
+    - Technical Indicators: data/technical-indicators.md
+    - Feature Engineering: data/feature-engineering.md
+  - Training:
+    - Algorithm Configuration: training/algorithm-config.md
+    - Environment Setup: training/environment-setup.md
+    - Training Strategies: training/strategies.md
+    - Hyperparameter Tuning: training/hyperparameter-tuning.md
+  - Backtesting & Evaluation:
+    - Performance Metrics: evaluation/performance-metrics.md
+    - Risk Analysis: evaluation/risk-analysis.md
+    - Visualization: evaluation/visualization.md
+  - Advanced Features:
+    - Custom Environments: advanced/custom-environments.md
+    - Custom Reward Functions: advanced/custom-rewards.md
+    - Ensemble Methods: advanced/ensemble-methods.md
+    - Multi-Timeframe Trading: advanced/multi-timeframe.md
+    - Paper Trading: advanced/paper-trading.md
+  - Examples & Tutorials:
+    - Stock Trading: examples/stock-trading.md
+    - Cryptocurrency Trading: examples/crypto-trading.md
+    - Portfolio Optimization: examples/portfolio-optimization.md
+    - Ensemble Strategy: examples/ensemble-strategy.md
+  - Troubleshooting:
+    - Common Issues: troubleshooting/common-issues.md
+    - Performance Optimization: troubleshooting/performance.md
+    - Memory Management: troubleshooting/memory.md
+  - Contributing:
+    - Development Setup: contributing/development.md
+    - Code Guidelines: contributing/guidelines.md
